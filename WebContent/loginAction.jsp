@@ -1,14 +1,16 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"  import="java.util.*,java.sql.*,com.team5101.test.*,com.team5101.po.*,javax.swing.JOptionPane" %>
+ <!DOCTYPE html>
 <html>
 <head>
 
-    <title>修改密码</title>
-	<link rel="stylesheet" href="../css/bootstrap.min.css" />
-	<script src="../jquery-3.3.1.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
+    <title>登陆</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<script src="jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
     <style type="text/css">
         html{
-            background:url(../graphic/background.jpg) no-repeat top center fixed;
+            background:url(graphic/background.jpg) no-repeat top center fixed;
             background-size:cover;
         }
         .login{
@@ -32,12 +34,7 @@
             height:40px;
             
         }
-        #rpasswd{
-            text-align:center;
-            width:470px;
-            height:40px;
-        }
-        #zhuce{
+        #denglu{
             text-align:center;
             width:470px;
             height:45px;
@@ -46,8 +43,8 @@
     <script type="text/javascript">
         function cleartt(id) {
             document.getElementById(id).value = "";
-            if (id == "tpasswd" || id == "trpasswd") {
-                var pv = document.getElementById(id);
+            if (id == "tpasswd") {
+                var pv = document.getElementById("tpasswd");
                 pv.type = "password";
             }
         }
@@ -55,30 +52,24 @@
         if (t) {
             t.addEventListener("focus", clear, false);
         }
-        function zhuce() {
+        function submitss() {
             var treg = /^1[358][0-9]{9}$/;
             var preg = /^\w{6,12}$/;
 
             var tv = document.getElementById("ttelnumber").value;
             var pv = document.getElementById("tpasswd").value;
-            var rpv = document.getElementById("trpasswd").value;
 
-            if (!treg.test(tv)) {
-                alert("手机格式不正确!!!");
+            if (tv=="") {
+                alert("账号不能为空!!!");
                 document.getElementById("ttelnumber").value = "";
+                return;
             }
             if (!preg.test(pv)) {
                 alert("密码格式不正确!长度必须在6-12位之间!!!");
                 document.getElementById("tpasswd").value = "";
                 return;
             }
-            if (rpv != pv) {
-                alert("两次密码输入不一致，请重新输入!!!");
-                document.getElementById("tpasswd").value = "";
-                document.getElementById("trpasswd").value = "";
-                return;
-            }
-            window.open("login.html", "_self");
+            
         }
         
     </script>
@@ -92,11 +83,24 @@
 		<!--大脑需要书才能保持敏锐，就像剑需要磨刀石一样-->
         <br />
         <br />
-        <div id="telnumber" class="form-group"><input type="text"  class="form-control" onfocus="cleartt('ttelnumber');"  placeholder="初始密码" style="width:440px;" id="ttelnumber"  /></div>
-        <div id="passwd" class="form-group"><input type="text" class="form-control" onfocus="cleartt('tpasswd');"  placeholder="请输入密码" style="width:440px; " id="tpasswd" /></div>
-        <div id="rpasswd" class="form-group"><input type="text" class="form-control" onfocus="cleartt('trpasswd');"  placeholder="请再次输入" style="width:440px; " id="trpasswd" /></div>
-        <br />
-        <div id="zhuce container"><input type="button" class="btn btn-primary btn-block" value="修改密码" onclick="zhuce()"/></div>
+        	<div class="form-group" ><input type="text" class="form-control"  onfocus="cleartt('ttelnumber');"  placeholder="账号" style="width:440px;" id="ttelnumber"  name="ttelnumber"/></div>
+			<br />
+	        <div class="form-group"><input type="text" class="form-control" onfocus="cleartt('tpasswd');"  placeholder="请输入密码" style="width:440px; " id="tpasswd" name="tpasswd"/></div>
+	        <br />
+	        <br />
+	        <div id="denglu container"><input type="submit" class="btn btn-primary btn-block" value="登陆" onclick="submitss()"/></div>
+	        <p align="right" ><a href="passwd_modify.jsp" style="color:cornflowerblue;text-decoration:none;">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </div>
+    <%
+        	String root = request.getParameter("ttelnumber");
+        	String passwd = request.getParameter("tpasswd");
+        	
+        	PqwBatisConfig myBatis = new PqwBatisConfig();
+        	if(myBatis.userConfig(root, passwd)){
+        		response.sendRedirect("index/sale_book.jsp");
+        	}else{
+        	    out.print("<script language='javascript'>alert('账号或密码不正确!!!');window.location.href='login.jsp';</script>"); 
+        	}
+       %>
 </body>
 </html>

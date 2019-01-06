@@ -2,7 +2,8 @@
 <html>
 <head>
 
-    <title>登陆</title>
+    <title>修改密码</title>
+    <meta charset="UTF-8">
 	<link rel="stylesheet" href="css/bootstrap.min.css" />
 	<script src="jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -39,35 +40,34 @@
         }
     </style>
     <script type="text/javascript">
-        function cleartt(id) {
-            document.getElementById(id).value = "";
-            if (id == "tpasswd") {
-                var pv = document.getElementById("tpasswd");
-                pv.type = "password";
-            }
-        }
-        var t = document.getElementById("ttelnumber");
-        if (t) {
-            t.addEventListener("focus", clear, false);
-        }
-        function submit() {
+    
+        function zhuce() {
             var treg = /^1[358][0-9]{9}$/;
             var preg = /^\w{6,12}$/;
 
             var tv = document.getElementById("ttelnumber").value;
             var pv = document.getElementById("tpasswd").value;
+            var pr = document.getElementById("trpasswd").value;
 
-            if (!treg.test(tv)) {
-                alert("手机格式不正确!!!");
+            if (tv=="") {
+                alert("初始密码不能为空!!!");
                 document.getElementById("ttelnumber").value = "";
-                return;
+                return false;
             }
             if (!preg.test(pv)) {
                 alert("密码格式不正确!长度必须在6-12位之间!!!");
                 document.getElementById("tpasswd").value = "";
-                return;
+                document.getElementById("trpasswd").value = "";
+                return false;
             }
-            window.open("index/购物首页.html", "_self");
+            
+            if(pv!=pr){
+            	 alert("密码不一致!!!");
+                 document.getElementById("tpasswd").value = "";
+                 document.getElementById("trpasswd").value = "";
+                 return false;
+            }
+            
         }
         
     </script>
@@ -81,13 +81,13 @@
 		<!--大脑需要书才能保持敏锐，就像剑需要磨刀石一样-->
         <br />
         <br />
-        <div id="form-group" ><input type="text" class="form-control"  onfocus="cleartt('ttelnumber');"  placeholder="账号" style="width:440px;" id="ttelnumber"  /></div>
-		<br />
-        <div id="form-group"><input type="text" class="form-control" onfocus="cleartt('tpasswd');"  placeholder="请输入密码" style="width:440px; " id="tpasswd" /></div>
-        <br />
-        <br />
-        <div id="denglu container"><input type="button" class="btn btn-primary btn-block" value="登陆" onclick="submit()"/></div>
-        <p align="right" ><a href="index/passwd_modify.html" style="color:cornflowerblue;text-decoration:none;">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <form action="passwd_modifyAction.jsp" method="post">
+        	<div id="telnumber" class="form-group"><input type="password"  class="form-control" onfocus="cleartt('ttelnumber');"  placeholder="初始密码" style="width:440px;" id="ttelnumber"  name="ttelnumber"/></div>
+	        <div id="passwd" class="form-group"><input type="password" class="form-control" onfocus="cleartt('tpasswd');"  placeholder="请输入密码" style="width:440px; " id="tpasswd" name="tpasswd"/></div>
+	        <div id="rpasswd" class="form-group"><input type="password" class="form-control" onfocus="cleartt('trpasswd');"  placeholder="请再次输入" style="width:440px; " id="trpasswd" name="trpasswd"/></div>
+	        <br />
+	        <div id="zhuce container"><input type="submit" class="btn btn-primary btn-block" value="修改密码" onclick="return zhuce()"/></div>
+        </form>
     </div>
 </body>
 </html>

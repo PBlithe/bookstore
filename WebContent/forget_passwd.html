@@ -3,12 +3,13 @@
 <head>
 
     <title>忘记密码</title>
-	<link rel="stylesheet" href="../css/bootstrap.min.css" />
-	<script src="../jquery-3.3.1.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<script src="jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
     <style type="text/css">
         html{
-            background:url(../graphic/background.jpg) no-repeat top center fixed;
+            background:url(graphic/background.jpg) no-repeat top center fixed;
             background-size:cover;
         }
         .login{
@@ -44,41 +45,18 @@
         }
     </style>
     <script type="text/javascript">
-        function cleartt(id) {
-            document.getElementById(id).value = "";
-            if (id == "tpasswd" || id == "trpasswd") {
-                var pv = document.getElementById(id);
-                pv.type = "password";
-            }
-        }
-        var t = document.getElementById("ttelnumber");
-        if (t) {
-            t.addEventListener("focus", clear, false);
-        }
         function zhuce() {
             var treg = /^1[358][0-9]{9}$/;
             var preg = /^\w{6,12}$/;
 
-            var tv = document.getElementById("ttelnumber").value;
             var pv = document.getElementById("tpasswd").value;
-            var rpv = document.getElementById("trpasswd").value;
-
-            if (!treg.test(tv)) {
-                alert("手机格式不正确!!!");
-                document.getElementById("ttelnumber").value = "";
-            }
+            
             if (!preg.test(pv)) {
                 alert("密码格式不正确!长度必须在6-12位之间!!!");
                 document.getElementById("tpasswd").value = "";
-                return;
+                return false;
             }
-            if (rpv != pv) {
-                alert("两次密码输入不一致，请重新输入!!!");
-                document.getElementById("tpasswd").value = "";
-                document.getElementById("trpasswd").value = "";
-                return;
-            }
-            window.open("login.html", "_self");
+            
         }
         
     </script>
@@ -93,12 +71,14 @@
         <br />
 		<br />
         <br />
-		<div class="form-group">
+        <form action="forget_passwdAction.jsp" method="post">
+        	<div class="form-group">
 			<label for="question">密码提示:123456</label>
-			<input type="text" class="form-control" id="question" placeholder="请输入密码" />
-		</div>
-        <br />
-        <div id="zhuce container"><input type="button" class="btn btn-primary btn-block" value="确认密码" onclick="zhuce()"/></div>
+			<input type="password" class="form-control"  placeholder="请输入密码"  id="tpasswd" name="tpasswd" />
+			</div>
+	        <br />
+	        <div id="zhuce container"><input type="submit" class="btn btn-primary btn-block" value="确认密码" onclick="return zhuce()"/></div>
+        </form>
     </div>
 </body>
 </html>
